@@ -1,4 +1,4 @@
-package com.recycler.views
+package com.recycler.views.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.recycler.views.databinding.ListSelectionViewHolderBinding

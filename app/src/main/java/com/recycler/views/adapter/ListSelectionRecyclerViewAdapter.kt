@@ -1,13 +1,13 @@
-package com.recycler.views
+package com.recycler.views.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.recycler.views.databinding.ListSelectionViewHolderBinding
+import com.recycler.views.models.TaskList
 
-class ListSelectionRecyclerViewAdapter : RecyclerView.Adapter<ListSelectionViewHolder>() {
+class ListSelectionRecyclerViewAdapter(private val lists : MutableList<TaskList>) : RecyclerView.Adapter<ListSelectionViewHolder>() {
 
-    private val listTitles = arrayOf("MercedesGLC63","Alfa Romeo", "BMW")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListSelectionViewHolder {
         //Creates layoutInflater object from parent context and uses binding class to inflate itself
@@ -19,12 +19,16 @@ class ListSelectionRecyclerViewAdapter : RecyclerView.Adapter<ListSelectionViewH
 
     override fun onBindViewHolder(holder: ListSelectionViewHolder, position: Int) {
         holder.binding.itemNumber.text=(position + 1).toString()
-        holder.binding.itemString.text=listTitles[position]
+        holder.binding.itemString.text=lists[position].name
     }
 
     override fun getItemCount(): Int {
-        return listTitles.size
+        return lists.size
     }
 
+    //let adapter know of new list to display
+    fun listsUpdated() {
+        notifyItemInserted(lists.size-1)
+    }
 
 }
