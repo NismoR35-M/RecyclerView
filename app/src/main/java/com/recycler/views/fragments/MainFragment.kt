@@ -20,16 +20,7 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //viewModel
-        viewModel = ViewModelProvider(requireActivity(),
-        MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(requireActivity()))
-        )
-            .get(MainViewModel::class.java)
-        val recyclerViewAdapter = ListSelectionRecyclerViewAdapter(viewModel.lists)
-        binding.listsRecyclerview.adapter = recyclerViewAdapter
-        viewModel.onListAdded = {
-            recyclerViewAdapter.listsUpdated()
-        }
+
 
     }
 
@@ -41,6 +32,17 @@ class MainFragment : Fragment() {
 
         //Letting recycler view arrange it items in linear layout
         binding.listsRecyclerview.layoutManager=LinearLayoutManager(requireContext())
+
+        //viewModel
+        viewModel = ViewModelProvider(requireActivity(),
+            MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(requireActivity()))
+        )
+            .get(MainViewModel::class.java)
+        val recyclerViewAdapter = ListSelectionRecyclerViewAdapter(viewModel.lists)
+        binding.listsRecyclerview.adapter = recyclerViewAdapter
+        viewModel.onListAdded = {
+            recyclerViewAdapter.listsUpdated()
+        }
 
         return binding.root
     }

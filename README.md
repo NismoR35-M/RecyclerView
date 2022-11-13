@@ -15,3 +15,7 @@ valid reason to access your data.
 With view models,data is kept separate from the Activity.This comes in handy if the activity ever had to 
 recreate itself,the data still exists somewhere and can be reused by the activity.
 
+## Communicating Between Activities
+Topics covered here 
+    * Communicate between activities using Intent
+    * Pass data between Activities
