@@ -11,12 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.recycler.views.fragments.MainFragment
 import com.recycler.views.R
+import com.recycler.views.adapter.ListSelectionRecyclerViewAdapter
 import com.recycler.views.databinding.ActivityMainBinding
 import com.recycler.views.models.MainViewModel
 import com.recycler.views.models.MainViewModelFactory
 import com.recycler.views.models.TaskList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
@@ -41,8 +42,9 @@ class MainActivity : AppCompatActivity() {
 
         //Fragment
         if (savedInstanceState == null){
+            val mainFragment = MainFragment.newInstance(this)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_view, MainFragment())
+                .replace(R.id.fragment_container_view, mainFragment)
                 .commitNow()
         }
 
@@ -51,6 +53,10 @@ class MainActivity : AppCompatActivity() {
             showCreateDialog()
         }
 
+    }
+    //implementing the interface method to pass the list to method that creates new activity
+    override fun listItemTapped(list: TaskList) {
+        showListDetail(list)
     }
     //Creating an intent
     private fun showListDetail(list: TaskList) {

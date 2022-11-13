@@ -12,8 +12,15 @@ import com.recycler.views.adapter.ListSelectionRecyclerViewAdapter
 import com.recycler.views.databinding.FragmentMainBinding
 import com.recycler.views.models.MainViewModel
 import com.recycler.views.models.MainViewModelFactory
+import com.recycler.views.models.TaskList
 
-class MainFragment : Fragment() {
+class MainFragment(val clickListener:
+MainFragmentInteractionListener) : Fragment(),
+    ListSelectionRecyclerViewAdapter.ListSelectionRecyclerViewClickListener {
+
+    interface MainFragmentInteractionListener{
+        fun listItemTapped(list: TaskList)
+    }
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var viewModel: MainViewModel
@@ -22,6 +29,10 @@ class MainFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
 
+    }
+    companion object{
+        fun newInstance(clickListener: MainFragmentInteractionListener)
+        =MainFragment(clickListener)
     }
 
     override fun onCreateView(
@@ -38,7 +49,7 @@ class MainFragment : Fragment() {
             MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(requireActivity()))
         )
             .get(MainViewModel::class.java)
-        val recyclerViewAdapter = ListSelectionRecyclerViewAdapter(viewModel.lists)
+        val recyclerViewAdapter = ListSelectionRecyclerViewAdapter(viewModel.lists, this)
         binding.listsRecyclerview.adapter = recyclerViewAdapter
         viewModel.onListAdded = {
             recyclerViewAdapter.listsUpdated()
@@ -47,4 +58,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
+    override fun listItemClicked(list: TaskList) {
+        clickListener.listItemTapped(list)
+    }
 }
