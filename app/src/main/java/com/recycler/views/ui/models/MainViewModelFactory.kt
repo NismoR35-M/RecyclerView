@@ -1,4 +1,4 @@
-package com.recycler.views.models
+package com.recycler.views.ui.models
 
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel

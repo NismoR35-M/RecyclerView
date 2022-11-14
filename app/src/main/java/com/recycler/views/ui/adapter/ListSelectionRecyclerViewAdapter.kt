@@ -1,10 +1,10 @@
-package com.recycler.views.adapter
+package com.recycler.views.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.recycler.views.databinding.ListSelectionViewHolderBinding
-import com.recycler.views.models.TaskList
+import com.recycler.views.logic.TaskList
 
 class ListSelectionRecyclerViewAdapter(
     val lists : MutableList<TaskList>,

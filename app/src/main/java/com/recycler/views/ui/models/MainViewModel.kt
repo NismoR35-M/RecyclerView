@@ -1,13 +1,15 @@
-package com.recycler.views.models
+package com.recycler.views.ui.models
 
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
+import com.recycler.views.logic.TaskList
 
 //Update constructor to store a SharedPreference property.hence allow write key-value pairs to SP.
 class MainViewModel(private val sharedPreferences: SharedPreferences): ViewModel() {
 
     //Add lambda 'onListAdded' used to inform other interested classes when list is added
     lateinit var onListAdded: (() -> Unit)
+    lateinit var list: TaskList
 
     //Property 'lists' is lazily created-until you call property,the property is empty.
     //Once called,the property will be populated by calling retrieveLists().hence avoid querying 4 unnecessary data until needed.
@@ -34,5 +36,17 @@ class MainViewModel(private val sharedPreferences: SharedPreferences): ViewModel
         sharedPreferences.edit().putStringSet(list.name, list.tasks.toHashSet()).apply()
         lists.add(list)
         onListAdded.invoke() //invoke the lambda to let interested classes know about the new list.
+    }
+
+    //writing in passed-in list to SP
+    fun updateList(list: TaskList) {
+        sharedPreferences.edit().putStringSet(list.name,list.tasks.toHashSet()).apply()
+        lists.add(list)
+    }
+
+    //clearing the list property of all values and add values from SP via retrieveLists()
+    fun refreshLists() {
+        lists.clear()
+        lists.addAll(retrieveLists())
     }
 }

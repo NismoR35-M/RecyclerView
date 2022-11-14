@@ -1,21 +1,20 @@
-package com.recycler.views.activities
+package com.recycler.views.ui.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.recycler.views.fragments.MainFragment
+import com.recycler.views.ui.fragments.MainFragment
 import com.recycler.views.R
-import com.recycler.views.adapter.ListSelectionRecyclerViewAdapter
 import com.recycler.views.databinding.ActivityMainBinding
-import com.recycler.views.models.MainViewModel
-import com.recycler.views.models.MainViewModelFactory
-import com.recycler.views.models.TaskList
+import com.recycler.views.ui.models.MainViewModel
+import com.recycler.views.ui.models.MainViewModelFactory
+import com.recycler.views.logic.TaskList
 
 class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionListener {
 
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionLi
     //The constant is used by the intent to refer to a list whenever it needs to pass one to new Activity.
     companion object{
         const val INTENT_LIST_KEY = "list"
+        const val LIST_DETAIL_REQUEST_CODE = 123
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +66,20 @@ class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionLi
         listDetailIntent.putExtra(INTENT_LIST_KEY, list)
 
         //inform current activity to start another Activity
-        startActivity(listDetailIntent)
+        startActivityForResult(listDetailIntent, LIST_DETAIL_REQUEST_CODE)
+    }
+    //Receive the result of ListDetailActivity here
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //Checking the request code is the one expected and confirm result is okay
+        if (requestCode == LIST_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            //Unwrap data intent passed in
+            data?.let {
+                //save the list to MainViewModel
+                viewModel.updateList(data.getParcelableExtra(INTENT_LIST_KEY)!!)
+                viewModel.refreshLists()
+            }
+        }
     }
 
     //Creating AlertDialog
@@ -95,5 +108,14 @@ class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionLi
 
         //Instruct the Dialog Builder to create the Dialog and display it on screen.
         builder.create().show()
+    }
+
+    override fun onBackPressed() {
+        val bundle = Bundle()
+        bundle.putParcelable(MainActivity.INTENT_LIST_KEY,viewModel.list)
+        val intent = Intent()
+        intent.putExtras(bundle)
+        setResult(Activity.RESULT_OK, intent)
+        super.onBackPressed()
     }
 }

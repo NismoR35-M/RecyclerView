@@ -1,4 +1,4 @@
-package com.recycler.views.fragments
+package com.recycler.views.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.recycler.views.adapter.ListSelectionRecyclerViewAdapter
+import com.recycler.views.ui.adapter.ListSelectionRecyclerViewAdapter
 import com.recycler.views.databinding.FragmentMainBinding
-import com.recycler.views.models.MainViewModel
-import com.recycler.views.models.MainViewModelFactory
-import com.recycler.views.models.TaskList
+import com.recycler.views.ui.models.MainViewModel
+import com.recycler.views.ui.models.MainViewModelFactory
+import com.recycler.views.logic.TaskList
 
 class MainFragment(val clickListener:
 MainFragmentInteractionListener) : Fragment(),

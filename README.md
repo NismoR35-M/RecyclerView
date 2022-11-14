@@ -18,4 +18,9 @@ recreate itself,the data still exists somewhere and can be reused by the activit
 ## Communicating Between Activities
 Topics covered here 
     * Communicate between activities using Intent
-    * Pass data between Activities
+    * Pass data between Activities and back
+
+## Using FRAGMENTS
+Takeaway:
+    * Splitting activities into Fragments
+    * How to provide different layout files for your app depending on the device's screen size
